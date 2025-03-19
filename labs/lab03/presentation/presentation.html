@@ -1,0 +1,248 @@
+\section{Информация}\label{ux438ux43dux444ux43eux440ux43cux430ux446ux438ux44f}
+
+\begin{frame}{Докладчик}
+\phantomsection\label{ux434ux43eux43aux43bux430ux434ux447ux438ux43a}
+\begin{columns}[c]
+\begin{column}{0.7\linewidth}
+\begin{itemize}
+\tightlist
+\item
+  Замбалова Дина Владимировна
+\item
+  студентка
+\item
+  Российский университет дружбы народов
+\item
+  \href{mailto:1032216453@pfur.ru}{1132226536@pfur.ru}
+\item
+  \url{https://github.com/dvzambalova}
+\end{itemize}
+\end{column}
+
+\begin{column}{0.25\linewidth}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Цель работы}
+\phantomsection\label{ux446ux435ux43bux44c-ux440ux430ux431ux43eux442ux44b}
+Построить модель боевых действий на языке прогаммирования Julia и
+посредством ПО OpenModelica.
+\end{frame}
+
+\begin{frame}{Задание}
+\phantomsection\label{ux437ux430ux434ux430ux43dux438ux435}
+Построить графики изменения численности войск армии \(X\) и армии \(Y\)
+для следующих случаев:
+
+\begin{enumerate}
+\item
+  Модель боевых действий между регулярными войсками
+\item
+  Модель ведение боевых действий с участием регулярных войск и
+  партизанских отрядов
+\end{enumerate}
+\end{frame}
+
+\section{Выполнение лабораторной
+работы}\label{ux432ux44bux43fux43eux43bux43dux435ux43dux438ux435-ux43bux430ux431ux43eux440ux430ux442ux43eux440ux43dux43eux439-ux440ux430ux431ux43eux442ux44b}
+
+\begin{frame}{Модель боевых действий между регулярными войсками}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux43cux435ux436ux434ux443-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux43cux438-ux432ux43eux439ux441ux43aux430ux43cux438}
+\[\begin{cases}
+    \dfrac{dx}{dt} = -0.57x(t)- 0.91y(t)+sin(5t)+1\\
+    \dfrac{dy}{dt} = -0.31x(t)- 0.2y(t)+cos(3t)+2
+\end{cases}\]
+\end{frame}
+
+\begin{frame}[fragile]{Модель боевых действий между регулярными
+войсками}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux43cux435ux436ux434ux443-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux43cux438-ux432ux43eux439ux441ux43aux430ux43cux438-1}
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{function} \FunctionTok{reg}\NormalTok{(u, p, t)}
+\NormalTok{    x, y }\OperatorTok{=}\NormalTok{ u}
+\NormalTok{    a, b, c, h }\OperatorTok{=}\NormalTok{ p}
+\NormalTok{    dx }\OperatorTok{=} \OperatorTok{{-}}\NormalTok{a}\OperatorTok{*}\NormalTok{x }\OperatorTok{{-}} \FunctionTok{b*y+sin}\NormalTok{(}\FloatTok{5}\OperatorTok{*}\NormalTok{t)}\OperatorTok{+}\FloatTok{1}
+\NormalTok{    dy }\OperatorTok{=} \OperatorTok{{-}}\NormalTok{c}\OperatorTok{*}\NormalTok{x }\FunctionTok{{-}h*y+cos}\NormalTok{(}\FloatTok{3}\OperatorTok{*}\NormalTok{t)}\OperatorTok{+}\FloatTok{2}
+    \ControlFlowTok{return}\NormalTok{ [dx, dy]}
+\KeywordTok{end}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{Модель боевых действий между регулярными
+войсками}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux43cux435ux436ux434ux443-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux43cux438-ux432ux43eux439ux441ux43aux430ux43cux438-2}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# начальные условия}
+\NormalTok{u0 }\OperatorTok{=}\NormalTok{ [}\FloatTok{44150}\NormalTok{, }\FloatTok{19000}\NormalTok{]}
+\NormalTok{p }\OperatorTok{=}\NormalTok{ [}\FloatTok{0.57}\NormalTok{, }\FloatTok{0.91}\NormalTok{, }\FloatTok{0.31}\NormalTok{, }\FloatTok{0.2}\NormalTok{]}
+\NormalTok{tspan }\OperatorTok{=}\NormalTok{ (}\FloatTok{0}\NormalTok{,}\FloatTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{Модель боевых действий между регулярными
+войсками}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux43cux435ux436ux434ux443-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux43cux438-ux432ux43eux439ux441ux43aux430ux43cux438-3}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob }\OperatorTok{=} \FunctionTok{ODEProblem}\NormalTok{(reg, u0, tspan, p)}
+\NormalTok{sol }\OperatorTok{=} \FunctionTok{solve}\NormalTok{(prob, }\FunctionTok{Tsit5}\NormalTok{())}
+\FunctionTok{plot}\NormalTok{(sol)}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}{Модель боевых действий между регулярными войсками}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux43cux435ux436ux434ux443-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux43cux438-ux432ux43eux439ux441ux43aux430ux43cux438-4}
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth,height=\textheight,keepaspectratio]{image/model1.png}
+\caption{Модель боевых действий между регулярными
+войсками}\label{fig:001}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Модель боевых действий между регулярными
+войсками}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux43cux435ux436ux434ux443-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux43cux438-ux432ux43eux439ux441ux43aux430ux43cux438-5}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model lab3}
+\NormalTok{  parameter Real a = 0.57;}
+\NormalTok{  parameter Real b = 0.91;}
+\NormalTok{  parameter Real c = 0.31;}
+\NormalTok{  parameter Real h = 0.2;}
+\NormalTok{  parameter Real x0 = 44150;}
+\NormalTok{  parameter Real y0 = 19000;}
+\NormalTok{  Real x(start=x0);}
+\NormalTok{  Real y(start=y0);}
+\NormalTok{equation}
+\NormalTok{  der(x) = {-}a*x {-} b*y+sin(5*time)+1;}
+\NormalTok{  der(y) = {-}c*x {-}h*y+cos(3*time)+2;}
+\NormalTok{end lab3;}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}{Модель боевых действий между регулярными войсками}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux43cux435ux436ux434ux443-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux43cux438-ux432ux43eux439ux441ux43aux430ux43cux438-6}
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth,height=\textheight,keepaspectratio]{image/model1_OM.png}
+\caption{Модель боевых действий между регулярными
+войсками}\label{fig:002}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Модель ведение боевых действий с участием регулярных войск
+и партизанских отрядов}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux432ux435ux434ux435ux43dux438ux435-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux441-ux443ux447ux430ux441ux442ux438ux435ux43c-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux445-ux432ux43eux439ux441ux43a-ux438-ux43fux430ux440ux442ux438ux437ux430ux43dux441ux43aux438ux445-ux43eux442ux440ux44fux434ux43eux432}
+\[\begin{cases}
+    \dfrac{dx}{dt} = -0.39x(t)-0.86y(t)+sin(2t)+1\\
+    \dfrac{dy}{dt} = -0.39x(t)y(t)-0.21y(t)+cos(2t)+1
+\end{cases}\]
+\end{frame}
+
+\begin{frame}[fragile]{Модель ведение боевых действий с участием
+регулярных войск и партизанских отрядов}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux432ux435ux434ux435ux43dux438ux435-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux441-ux443ux447ux430ux441ux442ux438ux435ux43c-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux445-ux432ux43eux439ux441ux43a-ux438-ux43fux430ux440ux442ux438ux437ux430ux43dux441ux43aux438ux445-ux43eux442ux440ux44fux434ux43eux432-1}
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{function} \FunctionTok{reg\_part}\NormalTok{(u, p, t)}
+\NormalTok{    x, y }\OperatorTok{=}\NormalTok{ u}
+\NormalTok{    a, b, c, h }\OperatorTok{=}\NormalTok{ p}
+\NormalTok{    dx }\OperatorTok{=} \OperatorTok{{-}}\NormalTok{a}\OperatorTok{*}\NormalTok{x }\OperatorTok{{-}} \FunctionTok{b*y+sin}\NormalTok{(}\FloatTok{2}\OperatorTok{*}\NormalTok{t)}\OperatorTok{+}\FloatTok{1}
+\NormalTok{    dy }\OperatorTok{=} \OperatorTok{{-}}\NormalTok{c}\OperatorTok{*}\NormalTok{x}\OperatorTok{*}\NormalTok{y }\FunctionTok{{-}h*y+cos}\NormalTok{(}\FloatTok{2}\OperatorTok{*}\NormalTok{t)}\OperatorTok{+}\FloatTok{1}
+    \ControlFlowTok{return}\NormalTok{ [dx, dy]}
+\KeywordTok{end}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{Модель ведение боевых действий с участием
+регулярных войск и партизанских отрядов}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux432ux435ux434ux435ux43dux438ux435-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux441-ux443ux447ux430ux441ux442ux438ux435ux43c-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux445-ux432ux43eux439ux441ux43a-ux438-ux43fux430ux440ux442ux438ux437ux430ux43dux441ux43aux438ux445-ux43eux442ux440ux44fux434ux43eux432-2}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# начальные условия}
+\NormalTok{u0 }\OperatorTok{=}\NormalTok{ [}\FloatTok{44150}\NormalTok{, }\FloatTok{19000}\NormalTok{]}
+\NormalTok{p }\OperatorTok{=}\NormalTok{ [}\FloatTok{0.39}\NormalTok{, }\FloatTok{0.86}\NormalTok{, }\FloatTok{0.39}\NormalTok{, }\FloatTok{0.21}\NormalTok{]}
+\NormalTok{tspan }\OperatorTok{=}\NormalTok{ (}\FloatTok{0}\NormalTok{,}\FloatTok{1}\NormalTok{)}\OperatorTok{\textbackslash{}}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{Модель ведение боевых действий с участием
+регулярных войск и партизанских отрядов}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux432ux435ux434ux435ux43dux438ux435-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux441-ux443ux447ux430ux441ux442ux438ux435ux43c-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux445-ux432ux43eux439ux441ux43a-ux438-ux43fux430ux440ux442ux438ux437ux430ux43dux441ux43aux438ux445-ux43eux442ux440ux44fux434ux43eux432-3}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob2 }\OperatorTok{=} \FunctionTok{ODEProblem}\NormalTok{(reg\_part, u0, tspan, p)}
+\NormalTok{sol2 }\OperatorTok{=} \FunctionTok{solve}\NormalTok{(prob2, }\FunctionTok{Tsit5}\NormalTok{())}
+\FunctionTok{plot}\NormalTok{(sol2)}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}{Модель ведение боевых действий с участием регулярных войск
+и партизанских отрядов}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux432ux435ux434ux435ux43dux438ux435-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux441-ux443ux447ux430ux441ux442ux438ux435ux43c-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux445-ux432ux43eux439ux441ux43a-ux438-ux43fux430ux440ux442ux438ux437ux430ux43dux441ux43aux438ux445-ux43eux442ux440ux44fux434ux43eux432-4}
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth,height=\textheight,keepaspectratio]{image/model2.png}
+\caption{Модель боевых действий с участием регулярных войск и
+партизанских отрядов}\label{fig:003}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Модель ведение боевых действий с участием
+регулярных войск и партизанских отрядов}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux432ux435ux434ux435ux43dux438ux435-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux441-ux443ux447ux430ux441ux442ux438ux435ux43c-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux445-ux432ux43eux439ux441ux43a-ux438-ux43fux430ux440ux442ux438ux437ux430ux43dux441ux43aux438ux445-ux43eux442ux440ux44fux434ux43eux432-5}
+\begin{verbatim}
+model lab3_v2
+  parameter Real a = 0.39;
+  parameter Real b = 0.86;
+  parameter Real c = 0.39;
+  parameter Real h = 0.21;
+  parameter Real x0 = 44150;
+  parameter Real y0 = 19000;
+  Real x(start=x0);
+  Real y(start=y0);
+equation
+  der(x) = -a*x - b*y+sin(2*time)+1;
+  der(y) = -c*x*y -h*y+cos(2*time)+1;
+end lab3_v2;
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Модель ведение боевых действий с участием регулярных войск
+и партизанских отрядов}
+\phantomsection\label{ux43cux43eux434ux435ux43bux44c-ux432ux435ux434ux435ux43dux438ux435-ux431ux43eux435ux432ux44bux445-ux434ux435ux439ux441ux442ux432ux438ux439-ux441-ux443ux447ux430ux441ux442ux438ux435ux43c-ux440ux435ux433ux443ux43bux44fux440ux43dux44bux445-ux432ux43eux439ux441ux43a-ux438-ux43fux430ux440ux442ux438ux437ux430ux43dux441ux43aux438ux445-ux43eux442ux440ux44fux434ux43eux432-6}
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth,height=\textheight,keepaspectratio]{image/model2_OM.png}
+\caption{Модель боевых действий с участием регулярных войск и
+партизанских отрядов}\label{fig:004}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Выводы}
+\phantomsection\label{ux432ux44bux432ux43eux434ux44b}
+В процессе выполнения данной лабораторной работы я построила модель
+боевых действий на языке прогаммирования Julia и посредством ПО
+OpenModelica, а также провела сравнительный анализ.
+\end{frame}
+
+\begin{frame}{Список литературы}
+\phantomsection\label{ux441ux43fux438ux441ux43eux43a-ux43bux438ux442ux435ux440ux430ux442ux443ux440ux44b}
+\begin{enumerate}
+\tightlist
+\item
+  Законы\_Осипова\_---\emph{Ланчестера {[}Электронный ресурс{]}. URL:
+  https://ru.wikipedia.org/wiki/Законы\_Осипова}---\_Ланчестера.
+\end{enumerate}
+\end{frame}
