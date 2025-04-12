@@ -1,0 +1,281 @@
+\begin{frame}{Информация}
+\protect\hypertarget{ux438ux43dux444ux43eux440ux43cux430ux446ux438ux44f}{}
+\begin{block}{Докладчики}
+\protect\hypertarget{ux434ux43eux43aux43bux430ux434ux447ux438ux43aux438}{}
+\begin{columns}[c]
+\begin{column}{0.7\textwidth}
+\begin{itemize}
+\tightlist
+\item
+  Замбалова Дина Владимировна
+\item
+  Кузнецова София Вадимовна
+\item
+  Поляков Глеб Сергеевич
+\item
+  Скандарова Полина Юрьевна
+\item
+  Цвелёв Сергей Андреевич
+\item
+  Шулуужук Айраана Вячеславовна
+\end{itemize}
+\end{column}
+
+\begin{column}{0.25\textwidth}
+\end{column}
+\end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}{Цель работы}
+\protect\hypertarget{ux446ux435ux43bux44c-ux440ux430ux431ux43eux442ux44b}{}
+Проанализировать и сравнить численные алгоритмы, применяемые для
+моделирования теплопроводности при детерминированном горении, с целью
+оценки их эффективности, устойчивости и точности при решении задач с
+высокой нелинейностью и резкими градиентами температуры.
+\end{frame}
+
+\begin{frame}{Задание}
+\protect\hypertarget{ux437ux430ux434ux430ux43dux438ux435}{}
+\begin{enumerate}
+\tightlist
+\item
+  Кратко описать математическую модель теплопроводности с источником
+  тепла.
+\item
+  Выделить основные сложности моделирования: нелинейность, температурная
+  зависимость, фронт горения.
+\item
+  Рассмотреть три численных алгоритма: МКР, МКЭ и метод подвижных сеток.
+\item
+  Проанализировать особенности реализации каждого метода.
+\item
+  Сравнить алгоритмы по точности, эффективности и применимости.
+\item
+  Дать рекомендации по выбору алгоритма для различных задач.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Уравнение теплопроводности с источником тепла, граничные
+условия}
+\protect\hypertarget{ux443ux440ux430ux432ux43dux435ux43dux438ux435-ux442ux435ux43fux43bux43eux43fux440ux43eux432ux43eux434ux43dux43eux441ux442ux438-ux441-ux438ux441ux442ux43eux447ux43dux438ux43aux43eux43c-ux442ux435ux43fux43bux430-ux433ux440ux430ux43dux438ux447ux43dux44bux435-ux443ux441ux43bux43eux432ux438ux44f}{}
+Уравнение теплопроводности с источником тепла:
+
+\includegraphics[width=0.7\textwidth,height=\textheight]{image/0.png}
+
+\begin{itemize}
+\tightlist
+\item
+  \(ρ(T)\) - плотность материала, зависящая от температуры
+\item
+  \(c(T)\) - удельная теплоемкость, зависящая от температуры
+\item
+  \(T\) - температура
+\item
+  \(t\) - время
+\item
+  \(k(T)\) - коэффициент теплопроводности, зависящий от температуры
+\item
+  \(Q(T, C)\) - источник тепла, моделирующий процесс горения, зависящий
+  от температуры и концентрации реагентов (C).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Уравнение теплопроводности с источником тепла, граничные
+условия}
+\protect\hypertarget{ux443ux440ux430ux432ux43dux435ux43dux438ux435-ux442ux435ux43fux43bux43eux43fux440ux43eux432ux43eux434ux43dux43eux441ux442ux438-ux441-ux438ux441ux442ux43eux447ux43dux438ux43aux43eux43c-ux442ux435ux43fux43bux430-ux433ux440ux430ux43dux438ux447ux43dux44bux435-ux443ux441ux43bux43eux432ux438ux44f-1}{}
+Часто представляется в виде аррениусовской зависимости:
+
+\includegraphics[width=0.7\textwidth,height=\textheight]{image/1.png}
+
+где \(A\) - предэкспоненциальный фактор, \(Ea\) - энергия активации,
+\(R\) - универсальная газовая постоянная.
+\end{frame}
+
+\begin{frame}{Уравнение теплопроводности с источником тепла, граничные
+условия}
+\protect\hypertarget{ux443ux440ux430ux432ux43dux435ux43dux438ux435-ux442ux435ux43fux43bux43eux43fux440ux43eux432ux43eux434ux43dux43eux441ux442ux438-ux441-ux438ux441ux442ux43eux447ux43dux438ux43aux43eux43c-ux442ux435ux43fux43bux430-ux433ux440ux430ux43dux438ux447ux43dux44bux435-ux443ux441ux43bux43eux432ux438ux44f-2}{}
+Наиболее распространенные типы граничных условий:
+
+Дирихле (1-го рода): заданная температура на границе:
+\(T = T_{\text{границы}}\). Пример: поддержание постоянной температуры
+на поверхности.
+
+\includegraphics[width=0.3\textwidth,height=\textheight]{image/2.png}
+
+Неймана (2-го рода): заданный тепловой поток на границе: где \(n\) -
+нормаль к поверхности, \(q\) - плотность теплового потока. Пример:
+теплоизолированная граница \((q=0)\).
+\end{frame}
+
+\begin{frame}{Уравнение теплопроводности с источником тепла, граничные
+условия}
+\protect\hypertarget{ux443ux440ux430ux432ux43dux435ux43dux438ux435-ux442ux435ux43fux43bux43eux43fux440ux43eux432ux43eux434ux43dux43eux441ux442ux438-ux441-ux438ux441ux442ux43eux447ux43dux438ux43aux43eux43c-ux442ux435ux43fux43bux430-ux433ux440ux430ux43dux438ux447ux43dux44bux435-ux443ux441ux43bux43eux432ux438ux44f-3}{}
+Робена (3-го рода): смешанное условие, связывающее температуру и
+тепловой поток:
+
+\includegraphics[width=0.7\textwidth,height=\textheight]{image/3.png}
+
+где \(h\) - коэффициент теплоотдачи. Пример: конвективный теплообмен с
+окружающей средой.
+\end{frame}
+
+\begin{frame}{Метод конечных разностей (МКР)}
+\protect\hypertarget{ux43cux435ux442ux43eux434-ux43aux43eux43dux435ux447ux43dux44bux445-ux440ux430ux437ux43dux43eux441ux442ux435ux439-ux43cux43aux440}{}
+Явная схема. Значение температуры в узле \(i\) на новом временном слое
+\(n+1\) вычисляется непосредственно на основе значений температуры в
+соседних узлах на предыдущем временном слое \(n\). Для одномерного
+уравнения теплопроводности можно использовать следующую аппроксимацию:
+
+\includegraphics[width=0.65\textwidth,height=\textheight]{image/4.png}
+
+Критерий КФЛ для явной схемы:
+
+\includegraphics[width=0.25\textwidth,height=\textheight]{image/5.png}
+\end{frame}
+
+\begin{frame}{Метод конечных разностей (МКР)}
+\protect\hypertarget{ux43cux435ux442ux43eux434-ux43aux43eux43dux435ux447ux43dux44bux445-ux440ux430ux437ux43dux43eux441ux442ux435ux439-ux43cux43aux440-1}{}
+Неявная схема. Значение температуры на новом временном слое вычисляется
+путем решения системы линейных алгебраических уравнений. Например, для
+одномерного уравнения:
+
+\includegraphics[width=0.85\textwidth,height=\textheight]{image/6.png}
+\end{frame}
+
+\begin{frame}{Метод конечных элементов (МКЭ)}
+\protect\hypertarget{ux43cux435ux442ux43eux434-ux43aux43eux43dux435ux447ux43dux44bux445-ux44dux43bux435ux43cux435ux43dux442ux43eux432-ux43cux43aux44d}{}
+\begin{itemize}
+\item
+  МКЭ --- универсальный метод для численного решения уравнений, особенно
+  в сложных геометриях.
+\item
+  Область разбивается на конечные элементы (треугольники, тетраэдры и
+  др.).
+\item
+  Внутри каждого элемента температура аппроксимируется базисными
+  функциями.
+\item
+  Используется вариационная формулировка: вместо прямого решения
+  уравнения минимизируется функционал.
+\item
+  Результат --- система линейных уравнений: \(KU = F\), где \(K\) ---
+  матрица жесткости, \(U\) --- вектор температур, \(F\) --- вектор
+  нагрузки.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Метод конечных элементов (МКЭ)}
+\protect\hypertarget{ux43cux435ux442ux43eux434-ux43aux43eux43dux435ux447ux43dux44bux445-ux44dux43bux435ux43cux435ux43dux442ux43eux432-ux43cux43aux44d-1}{}
+\begin{itemize}
+\item
+  Матрица \(K\) формируется поэлементно --- процесс ресурсоемкий.
+\item
+  Возможна аппроксимация разного порядка: линейная, квадратичная,
+  кубическая.
+\item
+  Более высокий порядок → выше точность, но и выше вычислительные
+  затраты.
+\item
+  При моделировании горения важно учитывать температурную зависимость
+  параметров.
+\item
+  Требуются итерационные методы (например, метод Ньютона--Рафсона) для
+  решения нелинейных систем.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Метод подвижных сеток (МПС)}
+\protect\hypertarget{ux43cux435ux442ux43eux434-ux43fux43eux434ux432ux438ux436ux43dux44bux445-ux441ux435ux442ux43eux43a-ux43cux43fux441}{}
+Ключевым элементом МПС является уравнение для скорости узлов сетки.
+Существует множество подходов к определению этого уравнения. Вот
+несколько примеров:
+
+На основе градиента температуры:
+
+\includegraphics[width=0.3\textwidth,height=\textheight]{image/7.png}
+
+где \(i\) - скорость \(i\)-го узла сетки, \(λ\) - коэффициент адаптации,
+определяющий интенсивность перемещения сетки, \((∂T/∂x)_i\) - градиент
+температуры в \(i\)-м узле сетки.
+\end{frame}
+
+\begin{frame}{Метод подвижных сеток (МПС)}
+\protect\hypertarget{ux43cux435ux442ux43eux434-ux43fux43eux434ux432ux438ux436ux43dux44bux445-ux441ux435ux442ux43eux43a-ux43cux43fux441-1}{}
+На основе кривизны:
+
+\includegraphics[width=0.3\textwidth,height=\textheight]{image/8.png}
+
+где \(κ_i\) - кривизна изолинии температуры в \(i\)-м узле сетки. Этот
+подход позволяет сгущать узлы вблизи фронта горения, даже если градиент
+температуры относительно невелик.
+
+На основе ошибки решения: Скорость узлов определяется таким образом,
+чтобы минимизировать оценку ошибки численного решения.
+\end{frame}
+
+\begin{frame}{Метод подвижных сеток (МПС)}
+\protect\hypertarget{ux43cux435ux442ux43eux434-ux43fux43eux434ux432ux438ux436ux43dux44bux445-ux441ux435ux442ux43eux43a-ux43cux43fux441-2}{}
+Алгоритм перемещения сетки обычно включает несколько этапов:
+
+\begin{itemize}
+\item
+  Вычисление скорости узлов сетки на основе выбранного критерия.
+\item
+  Перемещение узлов сетки на небольшое расстояние в соответствии с
+  вычисленной скоростью.
+\item
+  Проверка качества сетки (например, минимальный угол элемента). Если
+  качество сетки ухудшилось (например, элементы стали слишком
+  вытянутыми), выполняется процедура решеинга -- перестроения сетки.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Выводы}
+\protect\hypertarget{ux432ux44bux432ux43eux434ux44b}{}
+В заключение, мы рассмотрели три основных алгоритма численного решения
+задачи теплопроводности при детерминированном горении: метод конечных
+разностей, метод конечных элементов и метод подвижных сеток.
+\end{frame}
+
+\begin{frame}{Выводы}
+\protect\hypertarget{ux432ux44bux432ux43eux434ux44b-1}{}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3467}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1867}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2133}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2533}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Критерий
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+МКР
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+МКЭ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+МПС
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Простота реализации & Высокая & Средняя & Низкая \\
+Точность & Средняя & Высокая & Очень высокая \\
+Вычислительные затраты & Низкие & Средние & Высокие \\
+Сложная геометрия & Ограничена & Подходит & Подходит \\
+Адаптация к фронту & Нет & Нет & Да \\
+Устойчивость & Зависит от схемы & Обычно высокая & Требует особого
+внимания \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Источники}
+\protect\hypertarget{ux438ux441ux442ux43eux447ux43dux438ux43aux438}{}
+Медведев Д. А., Куперштох А. Л., Прууэл Э. Р., Сатонкина Н. П., Карпов
+Д. И. Моделирование физических процессов и явлений на ПК: Учеб. пособие
+/ Новосибирск: Новосиб. гос. ун-т., 2010. --- 101 с.
+\end{frame}
+
+\begin{frame}[standout]{}
+\protect\hypertarget{section}{}
+Спасибо за внимание!
+\end{frame}
